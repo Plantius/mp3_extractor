@@ -1,22 +1,42 @@
 #include "tags.h"
-#include <string.h>
 
-tag_v1::tag_v1(char* buffer, const size_t length) : identifier(), song_name(), artist(),
-                   album(), year(), comment(), genre(), valid(false)
+tag_v1::tag_v1() : identifier(), song_name(), artist(),
+                   album(), year(), comment(), genre()
 {
-    this->valid = set_tag(buffer, length);
+    memset(this->identifier, 0, sizeof(this->identifier));
+    memset(this->song_name, 0, sizeof(this->song_name));
+    memset(this->artist, 0, sizeof(this->artist));
+    memset(this->album, 0, sizeof(this->album));
+    memset(this->year, 0, sizeof(this->year));
+    memset(this->comment, 0, sizeof(this->comment));
+    this->genre = 0;
 }
 
-tag_v2::tag_v2(char* buffer, const size_t length) : identifier(), version(), unsync(false),
-                   ext_head(false), exp(false), size(0), frames(), valid(false)
+tag_v2::tag_v2() : identifier(), version(), unsync(false),
+                   ext_head(false), exp(false), size(0), frames()
 {
-    this->valid = set_tag(buffer, length);
+    memset(this->identifier, 0, sizeof(this->identifier));
+    memset(this->version, 0, sizeof(this->version));
+}
+
+tag_v1::tag_v1(const char* buffer, const size_t length) : identifier(), song_name(), artist(),
+                   album(), year(), comment(), genre()
+{
+    if (!set_tag(buffer, length))
+        throw -1;
+}
+
+tag_v2::tag_v2(const char* buffer, const size_t length) : identifier(), version(), unsync(false),
+                   ext_head(false), exp(false), size(0), frames()
+{
+    if (!set_tag(buffer, length))
+        throw -1;
 }
 
 
 
 bool 
-tag_v1::set_tag(char* buffer, const size_t length)
+tag_v1::set_tag(const char* buffer, const size_t length)
 {
     if (length < len_v1)
         return false;
@@ -37,13 +57,12 @@ tag_v1::set_tag(char* buffer, const size_t length)
         if (i == 127)
             this->genre = buffer[length-len_v1+i];
     }
-    if (strcmp(this->identifier, "TAG"))
-        return false;
+ 
     return true;
 }
 
 bool 
-tag_v2::set_tag(char* buffer, const size_t length)
+tag_v2::set_tag(const char* buffer, const size_t length)
 {
     if (length < len_v2)
         return false;
@@ -62,8 +81,7 @@ tag_v2::set_tag(char* buffer, const size_t length)
             this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0b01111111); 
         }
     }
-    if (strcmp(this->identifier, "ID3"))
-        return false;
+
     while (temp < this->size){
         tag_frame frame(buffer, temp);
         frame.print_frame();
@@ -94,7 +112,7 @@ tag_v2::print_tag()
               << std::endl;
 }
 
-tag_frame::tag_frame(char* buffer, const size_t offset)
+tag_frame::tag_frame(const char* buffer, const size_t offset)
 {
     size_t start = len_v2 + offset;
     // identifier

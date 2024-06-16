@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string.h>
 
 const uint8_t len_v1 = 128;
 const uint8_t len_v2 = 10;
@@ -10,7 +11,7 @@ const uint8_t len_v2 = 10;
 
 struct tag_frame
 {
-    tag_frame(char* buffer, const size_t offset);
+    tag_frame(const char* buffer, const size_t offset);
     void print_frame();
     // HEADER
     char identifier[4] = {};
@@ -34,14 +35,11 @@ class tag_v1
         char year[4];
         char comment[30];
         char genre;
-        // valid bit
-        bool valid;
     public:
-        tag_v1() : identifier(), song_name(), artist(),
-                   album(), year(), comment(), genre(), valid(false) {};
-        tag_v1(char* buffer, const size_t length);
+        tag_v1();
+        tag_v1(const char* buffer, const size_t length);
 
-        bool set_tag(char* buffer, const size_t length);
+        bool set_tag(const char* buffer, const size_t length);
         void print_tag();
 };
 
@@ -55,14 +53,11 @@ class tag_v2
         bool exp;
         uint32_t size;
         std::vector<tag_frame> frames;
-        // valid bit
-        bool valid;
     public:
-        tag_v2() : identifier(), version(), unsync(false),
-                   ext_head(false), exp(false), size(0), frames(), valid(false) {};
-        tag_v2(char* buffer, const size_t length);
+        tag_v2();
+        tag_v2(const char* buffer, const size_t length);
 
-        bool set_tag(char* buffer, const size_t length);
+        bool set_tag(const char* buffer, const size_t length);
 
         void print_tag();
 };

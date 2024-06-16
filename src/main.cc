@@ -16,8 +16,11 @@ int main(int argc, char const *argv[])
         file.close();
 
         audio data(buffer, length);
-        data.get_tag2().print_tag();
-        data.get_tag1().print_tag();
+
+        if (data.valid_tag1())
+            data.get_tag1().print_tag();
+        if (data.valid_tag2())
+            data.get_tag2().print_tag();
         
         delete[] buffer;
     }

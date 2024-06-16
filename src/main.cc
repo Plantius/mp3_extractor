@@ -22,10 +22,10 @@ int main()
         //     //     std::cout << buffer[i] << (i-6)%sizeof(this->size) & 0b1);
         //     // }std::cout << std::endl;
         // }
-        tag_v1 tag1(buffer, length);
         tag_v2 tag2(buffer, length);
-        tag1.print_tag();
+        tag_v1 tag1(buffer, length);
         tag2.print_tag();
+        tag1.print_tag();
         
         delete[] buffer;
     }

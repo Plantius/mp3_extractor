@@ -1,5 +1,5 @@
-#ifndef TAGS
-#define TAGS
+#ifndef TAGS_H
+#define TAGS_H
 
 #include <iostream>
 #include <vector>
@@ -7,10 +7,6 @@
 const uint8_t len_v1 = 128;
 const uint8_t len_v2 = 10;
 
-struct audio_frame
-{
-    
-};
 
 struct tag_frame
 {
@@ -26,7 +22,6 @@ struct tag_frame
 
     size_t frame_size = 0;
 };
-
 
 
 class tag_v1

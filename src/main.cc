@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "tags.h"
+#include "audio.h"
 
 
 int main() 
@@ -16,9 +16,9 @@ int main()
         file.read(buffer, length);
         file.close();
 
-        tag_v2 tag2(buffer, length);
+        audio data(buffer, length);
         // tag_v1 tag1(buffer, length);
-        tag2.print_tag();
+        data.get_tag2().print_tag();
         // tag1.print_tag();
         
         delete[] buffer;

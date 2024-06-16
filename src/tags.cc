@@ -44,7 +44,6 @@ tag_v2::set_tag(char* buffer, const size_t length)
             this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0x7f); 
     }
     tag_frame frame(buffer);
-    std::cout << "SIZE -------------------- "<< sizeof(frame) << std::endl;
     frame.print_frame();
 
     return true;
@@ -82,14 +81,17 @@ tag_frame::tag_frame(char* buffer)
         this->flags[i] = buffer[len_v2 + sizeof(this->identifier) + sizeof(this->size) + i];
     // body
     for (size_t i = 0; i < this->size; i++)
-        body.push_back(buffer[len_v2 + sizeof(this->identifier)+sizeof(this->size)+sizeof(this->flags)+i]);
+        body.push_back(buffer[len_v2 + sizeof(this->identifier) + sizeof(this->size) + sizeof(this->flags) + i]);
 }
+
 
 void
 tag_frame::print_frame()
-{
-    std::cout << identifier << ", " << size << ", " << flags << ", ";
-    for (auto i: body){
+{   
+    for (auto i : this->identifier)
         std::cout << i;
-    }std::cout << std::endl;
+    std::cout << ", " << this->size << ", " << this->flags << ", ";
+    for (auto i: body)
+        std::cout << i;
+    std::cout << std::endl;
 }

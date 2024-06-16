@@ -14,14 +14,12 @@ struct audio_frame
 
 struct tag_frame
 {
-    tag_frame() : identifier(), size(0), flags(), 
-                  body() {};
     tag_frame(char* buffer);
     void print_frame();
     // HEADER
-    char identifier[4];
-    uint32_t size;
-    char flags[2];
+    char identifier[4] = {};
+    uint32_t size = 0;
+    char flags[2] = {};
     
     // BODY
     std::vector<char> body;

@@ -18,6 +18,7 @@ audio::audio(const char* buffer, const size_t length) : tag1(), tag2(), t1(false
 bool 
 audio::get_frames(const char* buffer, const size_t length)
 {
-    uint32_t offset = t2 ? tag2.get_size() : 0;
-    
+    uint32_t offset = t2 ? tag2.get_size() + len_v2 : 0;
+
+
 }

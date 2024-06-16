@@ -78,7 +78,8 @@ tag_v2::set_tag(const char* buffer, const size_t length)
             this->ext_head = (buffer[i] >> 6) & 0b1;
             this->exp = (buffer[i] >> 5) & 0b1;
         }if (i >= 6 && i <= 9){
-            this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0x7f); 
+            this->size |= ((buffer[i] & (0xff-1)) << (sizeof(this->size)-(i-6))*8);
+            // this->size |= ((buffer[i] << (i-6)%sizeof(this->size))); 
         }
     }
 
@@ -119,8 +120,9 @@ tag_frame::tag_frame(const char* buffer, const size_t offset)
     for (size_t i = 0; i < sizeof(this->identifier); i++)
         this->identifier[i] = buffer[start + i];
     // size
-    for (uint8_t i = 0; i < sizeof(this->size); i++)
-        this->size |= ((buffer[start + sizeof(this->identifier) + i] << i) & 0xff);
+    for (uint8_t i = sizeof(this->size); i > 0; i--){
+        this->size |= ((buffer[start + sizeof(this->identifier) + i -1] & 0xff) << (sizeof(this->size)-i)*8);
+    }
     // flags
     for (size_t i = 0; i < sizeof(this->flags); i++)
         this->flags[i] = buffer[start + sizeof(this->identifier) + sizeof(this->size) + i];

@@ -3,7 +3,7 @@ CC ?= gcc
 CXX ?= g++
 OPTIMIZER := -O3
 CXXWIN := x86_64-w64-mingw32-g++ --static
-CFLAGS := $(OPTIMIZER) -Wall -Wextra -Wpedantic -Wconversion \
+CFLAGS := -Wall -Wextra -Wpedantic -Wconversion \
 		  -Wcast-align -Wunused -Wold-style-cast \
 		  -Wpointer-arith -Wcast-qual
 CXXFLAGS := -Wall -Wextra -Wpedantic -Wconversion \

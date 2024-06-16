@@ -17,6 +17,7 @@ class audio
     public:
         audio() : tag1(), tag2(), frames() {};
         audio(char* buffer, const size_t length);
+
         tag_v1 get_tag1() {return tag1;};
         tag_v2 get_tag2() {return tag2;};
 

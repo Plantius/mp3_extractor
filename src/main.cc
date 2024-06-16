@@ -2,8 +2,7 @@
 #include <fstream>
 #include "audio.h"
 
-
-int main() 
+int main(int argc, char const *argv[]) 
 {
     std::ifstream file("/home/niels/projects/mp3_wave_extractor/spotifydown.com - Luchtballon.mp3", std::ifstream::binary);
 
@@ -17,9 +16,8 @@ int main()
         file.close();
 
         audio data(buffer, length);
-        // tag_v1 tag1(buffer, length);
         data.get_tag2().print_tag();
-        // tag1.print_tag();
+        data.get_tag1().print_tag();
         
         delete[] buffer;
     }

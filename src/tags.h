@@ -34,11 +34,12 @@ class tag_v1
         char year[4];
         char comment[30];
         char genre;
+        // valid bit
+        bool valid;
     public:
         tag_v1() : identifier(), song_name(), artist(),
-                   album(), year(), comment(), genre() {};
-        tag_v1(char* buffer, const size_t length) : identifier(), song_name(), artist(),
-                   album(), year(), comment(), genre() {set_tag(buffer, length);};
+                   album(), year(), comment(), genre(), valid(false) {};
+        tag_v1(char* buffer, const size_t length);
 
         bool set_tag(char* buffer, const size_t length);
         void print_tag();
@@ -54,11 +55,12 @@ class tag_v2
         bool exp;
         uint32_t size;
         std::vector<tag_frame> frames;
+        // valid bit
+        bool valid;
     public:
         tag_v2() : identifier(), version(), unsync(false),
-                   ext_head(false), exp(false), size(0), frames() {};
-        tag_v2(char* buffer, const size_t length) : identifier(), version(), unsync(false),
-                   ext_head(false), exp(false), size(0), frames() {set_tag(buffer, length);};
+                   ext_head(false), exp(false), size(0), frames(), valid(false) {};
+        tag_v2(char* buffer, const size_t length);
 
         bool set_tag(char* buffer, const size_t length);
 

@@ -1,4 +1,19 @@
 #include "tags.h"
+#include <string.h>
+
+tag_v1::tag_v1(char* buffer, const size_t length) : identifier(), song_name(), artist(),
+                   album(), year(), comment(), genre(), valid(false)
+{
+    this->valid = set_tag(buffer, length);
+}
+
+tag_v2::tag_v2(char* buffer, const size_t length) : identifier(), version(), unsync(false),
+                   ext_head(false), exp(false), size(0), frames(), valid(false)
+{
+    this->valid = set_tag(buffer, length);
+}
+
+
 
 bool 
 tag_v1::set_tag(char* buffer, const size_t length)
@@ -22,6 +37,8 @@ tag_v1::set_tag(char* buffer, const size_t length)
         if (i == 127)
             this->genre = buffer[length-len_v1+i];
     }
+    if (strcmp(this->identifier, "TAG"))
+        return false;
     return true;
 }
 
@@ -45,6 +62,8 @@ tag_v2::set_tag(char* buffer, const size_t length)
             this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0b01111111); 
         }
     }
+    if (strcmp(this->identifier, "ID3"))
+        return false;
     while (temp < this->size){
         tag_frame frame(buffer, temp);
         frame.print_frame();

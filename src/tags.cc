@@ -43,8 +43,10 @@ tag_v2::set_tag(char* buffer, const size_t length)
         }if (i >= 6 && i <= 9)
             this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0x7f); 
     }
+    
     tag_frame frame(buffer);
     frame.print_frame();
+    this->frames.push_back(frame);
 
     return true;
 }
@@ -82,6 +84,8 @@ tag_frame::tag_frame(char* buffer)
     // body
     for (size_t i = 0; i < this->size; i++)
         body.push_back(buffer[len_v2 + sizeof(this->identifier) + sizeof(this->size) + sizeof(this->flags) + i]);
+
+    this->frame_size = sizeof(this->identifier) + sizeof(this->size) + sizeof(this->flags) + this->body.size();
 }
 
 

@@ -23,6 +23,8 @@ struct tag_frame
     
     // BODY
     std::vector<char> body;
+
+    size_t frame_size = 0;
 };
 
 
@@ -58,7 +60,7 @@ class tag_v2
         std::vector<tag_frame> frames;
     public:
         tag_v2() : identifier(), version(), unsync(false),
-                   ext_head(false), exp(false), size(0) {};
+                   ext_head(false), exp(false), size(0), frames() {};
         tag_v2(char* buffer, const size_t length) {set_tag(buffer, length);};
 
         bool set_tag(char* buffer, const size_t length);

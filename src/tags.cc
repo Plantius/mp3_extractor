@@ -37,10 +37,16 @@ tag_v2::set_tag(char* buffer, const size_t length)
             this->identifier[i%sizeof(this->identifier)] = buffer[i];
         if (i >= 3 && i <= 4)
             this->version[(i-3)%sizeof(this->version)] = buffer[i];
-        if (i == 5)
-            this->flags = buffer[i];
-        if (i >= 6 && i <= 9)
-            this->size[(i-6)%sizeof(this->size)] = buffer[i];
+        if (i == 5){
+            this->unsync = (buffer[i] >> 7) & 0b1;
+            this->ext_head = (buffer[i] >> 6) & 0b1;
+            this->exp = (buffer[i] >> 5) & 0b1;
+        }if (i >= 6 && i <= 9)
+            this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0b01111111); 
+    }
+    while (size_t j = 0; j < )
+    for (size_t j = 0; j < this->size; j++){
+
     }
     return true;
 }
@@ -60,6 +66,6 @@ void
 tag_v2::print_tag()
 {
     std::cout << this->identifier << ", " << this->version << ", " 
-              << this->flags << ", " << this->size 
+              << this->unsync << ", " << this->ext_head  << ", " << this->exp << ", " << this->size 
               << std::endl;
 }

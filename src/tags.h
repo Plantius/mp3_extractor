@@ -2,9 +2,28 @@
 #define TAGS
 
 #include <iostream>
+#include <vector>
 
 const uint8_t len_v1 = 128;
 const uint8_t len_v2 = 10;
+
+struct audio_frame
+{
+    
+};
+
+struct tag_frame
+{
+    // HEADER
+    char identifier[4];
+    uint32_t size;
+    char flags[2];
+    
+    // BODY
+    std::vector<char> body;
+};
+
+
 
 class tag_v1
 {
@@ -30,14 +49,18 @@ class tag_v2
     private:
         char identifier[3];
         char version[2];
-        char flags;
-        char size[4];
+        bool unsync;
+        bool ext_head;
+        bool exp;
+        uint32_t size;
+        std::vector<tag_frame> frames;
     public:
-        tag_v2() : identifier(), version(), flags(),
-                   size() {};
+        tag_v2() : identifier(), version(), unsync(false),
+                   ext_head(false), exp(false), size(0) {};
         tag_v2(char* buffer, const size_t length) {set_tag(buffer, length);};
 
         bool set_tag(char* buffer, const size_t length);
+
         void print_tag();
 };
 

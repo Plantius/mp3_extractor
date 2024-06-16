@@ -6,7 +6,6 @@
 int main() 
 {
     std::ifstream file("/home/niels/projects/mp3_wave_extractor/001.mp3", std::ifstream::binary);
-    int frames = 0;
 
     if (file){
         file.seekg(0, std::ios::end);
@@ -19,22 +18,16 @@ int main()
 
 
 
-        for (size_t i = 0; i < length; i++){
-            uint8_t byte = buffer[i];
-            if (byte == 0xff){
-                if (i+1 < length && (static_cast<uint8_t>(buffer[i]) & 0xe0) == 0xe0)
-                frames++;
-            }
-            // for (uint8_t b = 0; b < 8; b++){
-            //     std::cout << ((static_cast<uint8_t> (buffer[i]) >> b) && 0b1);
-            // }std::cout << " ";
-        }
+        // for (size_t i = 0; i < length; i++){
+        //     // for (uint8_t b = 0; b < 8; b++){
+        //     //     std::cout << buffer[i] << (i-6)%sizeof(this->size) & 0b1);
+        //     // }std::cout << std::endl;
+        // }
         tag_v1 tag1(buffer, length);
         tag_v2 tag2(buffer, length);
         tag1.print_tag();
         tag2.print_tag();
         
-        std::cout << "Frames: "<< frames << " " << sizeof(tag_v1) << " " << sizeof(tag_v2) << std::endl;
         delete[] buffer;
     }
 

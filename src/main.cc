@@ -17,7 +17,6 @@ int main()
         file.close();
 
 
-
         // for (size_t i = 0; i < length; i++){
         //     // for (uint8_t b = 0; b < 8; b++){
         //     //     std::cout << buffer[i] << (i-6)%sizeof(this->size) & 0b1);

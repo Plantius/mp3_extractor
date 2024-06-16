@@ -14,6 +14,10 @@ struct audio_frame
 
 struct tag_frame
 {
+    tag_frame() : identifier(), size(0), flags(), 
+                  body() {};
+    tag_frame(char* buffer);
+    void print_frame();
     // HEADER
     char identifier[4];
     uint32_t size;

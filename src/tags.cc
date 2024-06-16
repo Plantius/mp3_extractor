@@ -1,6 +1,5 @@
 #include "tags.h"
 
-
 bool 
 tag_v1::set_tag(char* buffer, const size_t length)
 {
@@ -42,12 +41,12 @@ tag_v2::set_tag(char* buffer, const size_t length)
             this->ext_head = (buffer[i] >> 6) & 0b1;
             this->exp = (buffer[i] >> 5) & 0b1;
         }if (i >= 6 && i <= 9)
-            this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0b01111111); 
+            this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0x7f); 
     }
-    while (size_t j = 0; j < )
-    for (size_t j = 0; j < this->size; j++){
+    tag_frame frame(buffer);
+    std::cout << "SIZE -------------------- "<< sizeof(frame) << std::endl;
+    frame.print_frame();
 
-    }
     return true;
 }
 
@@ -68,4 +67,29 @@ tag_v2::print_tag()
     std::cout << this->identifier << ", " << this->version << ", " 
               << this->unsync << ", " << this->ext_head  << ", " << this->exp << ", " << this->size 
               << std::endl;
+}
+
+tag_frame::tag_frame(char* buffer)
+{
+    // identifier
+    for (size_t i = 0; i < sizeof(this->identifier); i++)
+        this->identifier[i] = buffer[len_v2 + i];
+    // size
+    for (uint8_t i = 0; i < sizeof(this->size); i++)
+        this->size |= ((buffer[len_v2 + sizeof(this->identifier) + i] << i) & 0xff);
+    // flags
+    for (size_t i = 0; i < sizeof(this->flags); i++)
+        this->flags[i] = buffer[len_v2 + sizeof(this->identifier) + sizeof(this->size) + i];
+    // body
+    for (size_t i = 0; i < this->size; i++)
+        body.push_back(buffer[len_v2 + sizeof(this->identifier)+sizeof(this->size)+sizeof(this->flags)+i]);
+}
+
+void
+tag_frame::print_frame()
+{
+    std::cout << identifier << ", " << size << ", " << flags << ", ";
+    for (auto i: body){
+        std::cout << i;
+    }std::cout << std::endl;
 }

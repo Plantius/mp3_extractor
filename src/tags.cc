@@ -78,7 +78,7 @@ tag_v2::set_tag(const char* buffer, const size_t length)
             this->ext_head = (buffer[i] >> 6) & 0b1;
             this->exp = (buffer[i] >> 5) & 0b1;
         }if (i >= 6 && i <= 9){
-            this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0b01111111); 
+            this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0x7f); 
         }
     }
 

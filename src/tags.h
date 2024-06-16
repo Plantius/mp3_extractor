@@ -58,8 +58,8 @@ class tag_v2
         tag_v2(const char* buffer, const size_t length);
 
         bool set_tag(const char* buffer, const size_t length);
-
         void print_tag();
+        uint32_t get_size() {return this->size;};
 };
 
 

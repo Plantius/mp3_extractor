@@ -30,6 +30,7 @@ tag_v2::set_tag(char* buffer, const size_t length)
 {
     if (length < len_v2)
         return false;
+    size_t temp = 0;
 
     for (size_t i = 0; i < len_v2; i++){
         if (i <= 2)
@@ -40,13 +41,17 @@ tag_v2::set_tag(char* buffer, const size_t length)
             this->unsync = (buffer[i] >> 7) & 0b1;
             this->ext_head = (buffer[i] >> 6) & 0b1;
             this->exp = (buffer[i] >> 5) & 0b1;
-        }if (i >= 6 && i <= 9)
-            this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0x7f); 
+        }if (i >= 6 && i <= 9){
+            this->size |= ((buffer[i] << (i-6)%sizeof(this->size)) & 0b01111111); 
+        }
     }
-    
-    tag_frame frame(buffer);
-    frame.print_frame();
-    this->frames.push_back(frame);
+    while (temp < this->size){
+        tag_frame frame(buffer, temp);
+        frame.print_frame();
+        temp += frame.frame_size;
+        
+        this->frames.push_back(frame);
+    }
 
     return true;
 }
@@ -66,24 +71,25 @@ void
 tag_v2::print_tag()
 {
     std::cout << this->identifier << ", " << this->version << ", " 
-              << this->unsync << ", " << this->ext_head  << ", " << this->exp << ", " << this->size 
+              << this->unsync << "-" << this->ext_head  << "-" << this->exp << ", " << this->size 
               << std::endl;
 }
 
-tag_frame::tag_frame(char* buffer)
+tag_frame::tag_frame(char* buffer, const size_t offset)
 {
+    size_t start = len_v2 + offset;
     // identifier
     for (size_t i = 0; i < sizeof(this->identifier); i++)
-        this->identifier[i] = buffer[len_v2 + i];
+        this->identifier[i] = buffer[start + i];
     // size
     for (uint8_t i = 0; i < sizeof(this->size); i++)
-        this->size |= ((buffer[len_v2 + sizeof(this->identifier) + i] << i) & 0xff);
+        this->size |= ((buffer[start + sizeof(this->identifier) + i] << i) & 0xff);
     // flags
     for (size_t i = 0; i < sizeof(this->flags); i++)
-        this->flags[i] = buffer[len_v2 + sizeof(this->identifier) + sizeof(this->size) + i];
+        this->flags[i] = buffer[start + sizeof(this->identifier) + sizeof(this->size) + i];
     // body
     for (size_t i = 0; i < this->size; i++)
-        body.push_back(buffer[len_v2 + sizeof(this->identifier) + sizeof(this->size) + sizeof(this->flags) + i]);
+        body.push_back(buffer[start + sizeof(this->identifier) + sizeof(this->size) + sizeof(this->flags) + i]);
 
     this->frame_size = sizeof(this->identifier) + sizeof(this->size) + sizeof(this->flags) + this->body.size();
 }

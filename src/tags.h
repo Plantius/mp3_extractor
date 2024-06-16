@@ -14,7 +14,7 @@ struct audio_frame
 
 struct tag_frame
 {
-    tag_frame(char* buffer);
+    tag_frame(char* buffer, const size_t offset);
     void print_frame();
     // HEADER
     char identifier[4] = {};
@@ -42,7 +42,8 @@ class tag_v1
     public:
         tag_v1() : identifier(), song_name(), artist(),
                    album(), year(), comment(), genre() {};
-        tag_v1(char* buffer, const size_t length) {set_tag(buffer, length);};
+        tag_v1(char* buffer, const size_t length) : identifier(), song_name(), artist(),
+                   album(), year(), comment(), genre() {set_tag(buffer, length);};
 
         bool set_tag(char* buffer, const size_t length);
         void print_tag();
@@ -61,7 +62,8 @@ class tag_v2
     public:
         tag_v2() : identifier(), version(), unsync(false),
                    ext_head(false), exp(false), size(0), frames() {};
-        tag_v2(char* buffer, const size_t length) {set_tag(buffer, length);};
+        tag_v2(char* buffer, const size_t length) : identifier(), version(), unsync(false),
+                   ext_head(false), exp(false), size(0), frames() {set_tag(buffer, length);};
 
         bool set_tag(char* buffer, const size_t length);
 

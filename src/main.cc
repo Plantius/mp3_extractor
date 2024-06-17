@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
             data.get_tag1().print_tag();
         if (data.valid_tag2())
             data.get_tag2().print_tag();
-        data.get_frames(buffer, length);
+        // data.get_frames(buffer, length);
         delete[] buffer;
     }
 

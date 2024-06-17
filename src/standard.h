@@ -6,7 +6,7 @@ template <typename T>
 void 
 print_bits(T num)
 {
-    for (size_t i = 0; i < sizeof(T)*4; i++)
+    for (size_t i = 0; i < sizeof(T)*8; i++)
         std::cout << ((num >> i) & 0b1);
     std::cout << std::endl;
 }

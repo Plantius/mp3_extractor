@@ -21,7 +21,7 @@ class audio
                   frames() {};
         audio(const char* buffer, const size_t length);
 
-        bool get_frames(const char* buffer, const size_t length);
+        bool get_frames(void* buffer, const size_t length);
 
 
 

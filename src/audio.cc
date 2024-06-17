@@ -16,13 +16,14 @@ audio::audio(const char* buffer, const size_t length) : tag1(), tag2(), t1(false
 
 
 bool 
-audio::get_frames(const char* buffer, const size_t length)
+audio::get_frames(void* buffer, const size_t length)
 {
     uint32_t offset = t2 ? tag2.get_size() + len_v2 : 0;
-
-    for (uint8_t i = 0; i < length; i++){
-        if (buffer[offset+i] == 0xff)
-            print_bits<uint32_t>(buffer[offset+i]);
+    int count = 0;
+    for (uint8_t i = offset; i < length; i+=sizeof(uint32_t)){
+        uint32_t* temp = reinterpret_cast<uint32_t*> (buffer+i);            
+        
     }
+    std::cout << count << std::endl;
     return true;
 }

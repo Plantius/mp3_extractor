@@ -33,6 +33,7 @@ struct audio_frame
     MPEG mpeg;
     LAYER layer;
     CRC crc;
+    uint16_t crc_sum;
     BITRATE bitrate;
     SAMPLING_RATE sampling_rate;
     PADDING padding;

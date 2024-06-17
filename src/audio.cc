@@ -1,5 +1,12 @@
 #include "audio.h"
 
+bool operator!=(const audio_frame& l, const audio_frame& r){
+    return !(l.mpeg == r.mpeg && l.layer == r.layer && l.bitrate == r.bitrate &&
+           l.sampling_rate == r.sampling_rate && l.channel == r.channel &&
+           l.copyright == r.copyright && l.original == r.original);
+}
+
+
 audio::audio(char* buffer, const size_t size) : tag1(), tag2(), t1(false), 
                                                         t2(false), frames()
 {   
@@ -42,14 +49,18 @@ audio::get_frames(char* buffer, const size_t size)
             frame.original = static_cast<ORIGINAL>((temp >> 2) & 0b1);
             frame.emphasis = static_cast<EMPHASIS>((temp) & 0b11);
             frame.size = static_cast<uint32_t>((144 * br[int(frame.bitrate)] / sr[int(frame.sampling_rate)]) + int(frame.padding));
+            if (!this->frames.empty() && frame != this->frames.back())
+                continue;
             this->frames.push_back(frame);
             if (frame.size != 960){
+            }
                 std::cout << frame.size << "\t" << i << "\t\t";  
                 print_bits<uint32_t>(temp);
-            }
             count++;
         }        
     }
+    // 10000110 10100111 0 10 00 111 11111111
+    // 00100010 00100111 1 10 11 111 11111111
     std::cout << "COUNT: " << double((count -c) * 0.026) << std::endl;
     return true;
 }

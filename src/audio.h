@@ -43,6 +43,7 @@ struct audio_frame
     ORIGINAL original;
     EMPHASIS emphasis;
     uint32_t size;
+    std::string data;
 };
 
 

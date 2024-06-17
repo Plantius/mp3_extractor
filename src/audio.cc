@@ -29,7 +29,7 @@ audio::get_frames(char* buffer, const size_t size)
     uint32_t temp = 0, count = 0, c = 0;
     audio_frame frame;
 
-    std::cout << "\t\t\t" << "coeme ghc s cbit l m frame sync " << std::endl;
+    // std::cout << "\t\t\t" << "coeme ghc s cbit l m frame sync " << std::endl;
     for (size_t i = offset; i < size; i+=sizeof(uint32_t)){
         temp = *reinterpret_cast<uint32_t*> (&buffer[i]);  
         temp = swap_endian<uint32_t>(temp);
@@ -51,16 +51,18 @@ audio::get_frames(char* buffer, const size_t size)
             frame.size = static_cast<uint32_t>((144 * br[int(frame.bitrate)] / sr[int(frame.sampling_rate)]) + int(frame.padding));
             if (!this->frames.empty() && frame != this->frames.back())
                 continue;
+            
+            frame.data.assign(&buffer[i + (frame.crc == CRC::p ? 6 : 4)], frame.size);
             this->frames.push_back(frame);
-            if (frame.size != 960){
-            }
-                std::cout << frame.size << "\t" << i << "\t\t";  
-                print_bits<uint32_t>(temp);
+           
+            // std::cout << frame.size << "\t" << i << "\t\t";  
+            // print_bits<uint32_t>(temp);
             count++;
         }        
     }
-    // 10000110 10100111 0 10 00 111 11111111
-    // 00100010 00100111 1 10 11 111 11111111
-    std::cout << "COUNT: " << double((count -c) * 0.026) << std::endl;
+    // std::cout << br[int(this->frames.front().bitrate)]  << " " << sr[int(this->frames.front().sampling_rate)]<< std::endl;
+    // std::cout << "Length of mp3-file in seconds: " << double((count -c) * 0.026) << std::endl;
+    for (auto i : this->frames) 
+        std::cout << i.data;
     return true;
 }

@@ -23,7 +23,6 @@ tag_v2::set_tag(char* buffer, const size_t size)
         tag_frame frame(buffer, temp);
         if (frame.frame_size == len_v2)
             break;
-        frame.print_frame();
         temp += frame.frame_size;
         
         this->frames.push_back(frame);
@@ -53,7 +52,7 @@ tag_frame::print_frame()
     
     if (this->frame_size < 10000) {
         for (auto i : this->body)
-            std::cout << i;
+            std::cout << char(toascii(i));
     }    
     std::cout << std::endl;
 }
@@ -72,4 +71,6 @@ tag_v2::print_tag()
     std::cout << this->header->identifier << ", " << this->header->version << ", " 
               << this->header->flag << ", " << this->header->size 
               << std::endl;
+    for (auto i : this->frames)
+        i.print_frame();
 }

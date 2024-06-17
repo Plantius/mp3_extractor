@@ -2,6 +2,7 @@
 #define AUDIO_H
 
 #include "tags.h"
+#include "standard.h"
 
 struct audio_frame
 {

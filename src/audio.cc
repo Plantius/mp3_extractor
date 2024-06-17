@@ -20,5 +20,9 @@ audio::get_frames(const char* buffer, const size_t length)
 {
     uint32_t offset = t2 ? tag2.get_size() + len_v2 : 0;
 
-
+    for (uint8_t i = 0; i < length; i++){
+        if (buffer[offset+i] == 0xff)
+            print_bits<uint32_t>(buffer[offset+i]);
+    }
+    return true;
 }

@@ -27,8 +27,11 @@ template <typename T>
 void 
 print_bits(T num)
 {
-    for (size_t i = 0; i < sizeof(T)*8; i++)
+    for (size_t i = 0; i < sizeof(T)*8; i++){
         std::cout << ((num >> i) & 0b1);
+        if (i == 24 || i == 16 || i == 8)
+            std::cout << " ";
+    }
     std::cout << std::endl;
 }
 

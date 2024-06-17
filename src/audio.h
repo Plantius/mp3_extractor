@@ -10,7 +10,7 @@ enum class BITRATE {free = 0b0000, b32 = 0b0001, b40 = 0b0010, b48 = 0b0011,
                     b56 = 0b0100, b64 = 0b0101, b80 = 0b0110,
                     b96 = 0b0111, b112 = 0b1000, b128 = 0b1001,
                     b160 = 0b1010, b192 = 0b1011, b224 = 0b1100,
-                    b256 = 0b1101, b4320 = 0b1110, BAD = 0b1111};
+                    b256 = 0b1101, b320 = 0b1110, BAD = 0b1111};
 enum class SAMPLING_RATE {s44100 = 0b00, s48000 = 0b01, s32000 = 0b10, reserved = 0b11};
 enum class PADDING {fnp = 0b00, fp = 0b01};
 enum class CHANNEL {stereo = 0b00, jstereo = 0b01, dual = 0b10, mono = 0b11};
@@ -19,10 +19,29 @@ enum class COPYRIGHT {nc = 0b00, c = 0b01};
 enum class ORIGINAL {co = 0b00, o = 0b01};
 enum class EMPHASIS {none = 0b00, e50_15 = 0b01, reserved = 0b10, ccit_j17 = 0b11};
 
+const int br[uint8_t(BITRATE::BAD)+1] = {0, 32000, 40000, 48000, 56000,
+                                              64000, 80000, 96000, 112000,
+                                              128000, 160000, 192000, 224000,
+                                              256000, 320000, -1}; 
+
+const int sr[uint8_t(SAMPLING_RATE::reserved)+1] = {44100, 48000, 32000, -1}; 
+
+
 
 struct audio_frame
 {
-
+    MPEG mpeg;
+    LAYER layer;
+    CRC crc;
+    BITRATE bitrate;
+    SAMPLING_RATE sampling_rate;
+    PADDING padding;
+    CHANNEL channel;
+    MODE_EXTENSION mode_extension;
+    COPYRIGHT copyright;
+    ORIGINAL original;
+    EMPHASIS emphasis;
+    uint32_t size;
 };
 
 class audio

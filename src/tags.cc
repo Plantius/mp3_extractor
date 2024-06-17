@@ -1,22 +1,5 @@
 #include "tags.h"
 
-tag_v1_header::tag_v1_header() : identifier(), song_name(), artist(),
-                   album(), year(), comment(), genre()
-{
-    memset(this->identifier, 0, sizeof(this->identifier));
-    memset(this->song_name, 0, sizeof(this->song_name));
-    memset(this->artist, 0, sizeof(this->artist));
-    memset(this->album, 0, sizeof(this->album));
-    memset(this->year, 0, sizeof(this->year));
-    memset(this->comment, 0, sizeof(this->comment));
-    this->genre = 0;
-}
-
-tag_v2_header::tag_v2_header() : identifier(), version(), flag(0), size(0)
-{
-    memset(this->identifier, 0, sizeof(this->identifier));
-    memset(this->version, 0, sizeof(this->version));
-}
 
 bool 
 tag_v1::set_tag(char* buffer, const size_t size)
@@ -52,12 +35,11 @@ tag_v2::set_tag(char* buffer, const size_t size)
 
 tag_frame::tag_frame(char* buffer, const size_t offset) : header(nullptr), body(), frame_size(0)
 {
+    // Header
     this->header = reinterpret_cast<tag_frame_header*>(&buffer[offset]);
     this->header->size = swap_endian<uint32_t>(this->header->size);
-    
-    for (size_t i = 0; i < this->header->size; i++)
-        this->body.push_back(buffer[offset + sizeof(tag_frame_header) + i]);
-
+    // Body
+    this->body.assign(&buffer[offset + sizeof(tag_frame_header)], this->header->size);
     this->frame_size = sizeof(tag_frame_header) + this->header->size;
 }
 

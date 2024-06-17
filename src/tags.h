@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include <string.h>
 #include "standard.h"
 
@@ -12,7 +13,8 @@ const uint8_t len_v2 = 10;
 
 struct tag_v1_header
 {
-    tag_v1_header();
+    tag_v1_header() : identifier(), song_name(), artist(),
+                   album(), year(), comment(), genre() {};
     char identifier[3];
     char song_name[30];
     char artist[30];
@@ -25,7 +27,7 @@ struct tag_v1_header
 #pragma pack(push, 1)
 struct tag_v2_header
 {
-    tag_v2_header();
+    tag_v2_header() : identifier(), version(), flag(0), size(0) {};
     char identifier[3];
     char version[2];
     char flag;
@@ -49,7 +51,7 @@ struct tag_frame
     void print_frame();
     tag_frame_header* header;
     // BODY
-    std::vector<char> body;
+    std::string body;
     size_t frame_size = 0;
 };
 

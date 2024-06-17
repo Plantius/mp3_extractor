@@ -80,7 +80,7 @@ tag_v2::set_tag(const char* buffer, const size_t length)
         }
     }
     for (uint8_t i = sizeof(this->size); i > 0; i--)
-        this->size |= ((buffer[6 + i-1] & (0xef)) << (sizeof(this->size)-i)*8);
+        this->size |= ((buffer[6 + i-1] & (0xff)) << (sizeof(this->size)-i)*8);
 
     while (temp < this->size){
         tag_frame frame(buffer, temp);

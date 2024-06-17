@@ -2,7 +2,6 @@
 #define AUDIO_H
 
 #include "tags.h"
-#include "standard.h"
 
 struct audio_frame
 {
@@ -19,9 +18,9 @@ class audio
     public:
         audio() : tag1(), tag2(), t1(false), t2(false), 
                   frames() {};
-        audio(const char* buffer, const size_t length);
+        audio(char* buffer, const size_t length);
 
-        bool get_frames(void* buffer, const size_t length);
+        bool get_frames(char* buffer, const size_t length);
 
 
 

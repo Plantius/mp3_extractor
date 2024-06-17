@@ -4,7 +4,10 @@
 
 int main(int argc, char const *argv[]) 
 {
-    std::ifstream file("/home/niels/projects/mp3_wave_extractor/spotifydown.com - Luchtballon.mp3", std::ifstream::binary);
+    char* filename = const_cast<char*>("/home/niels/projects/mp3_wave_extractor/spotifydown.com - Luchtballon.mp3");
+    if (argc > 1 && strcmp(argv[1], ""))
+        filename = const_cast<char*>(argv[1]);
+    std::ifstream file(filename, std::ifstream::binary);
 
     if (file){
         file.seekg(0, std::ios::end);

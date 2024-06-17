@@ -12,7 +12,7 @@ tag_v1_header::tag_v1_header() : identifier(), song_name(), artist(),
     this->genre = 0;
 }
 
-tag_v2_header::tag_v2_header() : identifier(), version(), flag(), size(0)
+tag_v2_header::tag_v2_header() : identifier(), version(), flag(0), size(0)
 {
     memset(this->identifier, 0, sizeof(this->identifier));
     memset(this->version, 0, sizeof(this->version));

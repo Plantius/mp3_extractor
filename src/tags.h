@@ -14,7 +14,7 @@ const uint8_t len_v2 = 10;
 struct tag_v1_header
 {
     tag_v1_header() : identifier(), song_name(), artist(),
-                   album(), year(), comment(), genre() {};
+                      album(), year(), comment(), genre() {};
     char identifier[3];
     char song_name[30];
     char artist[30];
@@ -83,16 +83,12 @@ private:
     std::vector<tag_frame> frames;
 public:
     tag_v2() : header(), frames() {};
-    tag_v2(char* buffer, const size_t size) : 
-           header(), frames() 
+    tag_v2(char* buffer, const size_t size) : header(), frames() 
            {if (!set_tag(buffer, size)) throw -1;};
 
     bool set_tag(char* buffer, const size_t size);
     void print_tag();
     uint32_t get_size() {return this->header->size;};
 };
-
-
-
 
 #endif

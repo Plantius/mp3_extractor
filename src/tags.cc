@@ -17,7 +17,7 @@ tag_v2::set_tag(char* buffer, const size_t size)
         return false;
     size_t temp = len_v2;
     this->header = reinterpret_cast<tag_v2_header*>(buffer);
-    this->header->size = swap_endian<uint32_t>(this->header->size);
+    this->header->size = swap_endian<uint32_t>(this->header->size) & 0x7F7F7F7F;
 
     while (temp < this->header->size){
         tag_frame frame(buffer, temp);

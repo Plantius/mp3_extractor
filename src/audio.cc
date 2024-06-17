@@ -19,12 +19,16 @@ bool
 audio::get_frames(char* buffer, const size_t size)
 {
     size_t offset = t2 ? tag2.get_size() + len_v2 : 0;
-    int count = 0;
+    uint32_t temp = 0, count = 0;
+    std::cout << "\t\t\t" << "coeme ghc s cbit l m frame sync " << std::endl;
     for (size_t i = offset; i < size; i+=sizeof(uint32_t)){
-        uint32_t temp = *reinterpret_cast<uint32_t*> (&buffer[i]);  
-        std::cout << i << "\t\t";  
-        print_bits<uint32_t>(temp);        
+        temp = *reinterpret_cast<uint32_t*> (&buffer[i]);  
+        if ((((temp >> 21) & 0x7ff) == 0x7ff) && (((temp >> 12) & 0xf) != 0xf) && 
+            (((temp >> 10) & 0x3) != 0x3)){
+            std::cout << count << "\t" << i << "\t\t";  
+            print_bits<uint32_t>(temp);
+            count++;
+        }        
     }
-    std::cout << count << std::endl;
     return true;
 }

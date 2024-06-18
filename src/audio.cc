@@ -26,7 +26,7 @@ bool
 audio::get_frames(char* buffer, const size_t size)
 {
     size_t offset = t2 ? tag2.get_size() + len_v2 : 0;
-    uint32_t temp = 0, count = 0, c = 0;
+    uint32_t temp = 0;
     audio_frame frame;
 
     // std::cout << "\t\t\t" << "coeme ghc s cbit l m frame sync " << std::endl;
@@ -55,14 +55,13 @@ audio::get_frames(char* buffer, const size_t size)
             frame.data.assign(&buffer[i + (frame.crc == CRC::p ? 6 : 4)], frame.size);
             this->frames.push_back(frame);
            
-            // std::cout << frame.size << "\t" << i << "\t\t";  
-            // print_bits<uint32_t>(temp);
-            count++;
+            std::cout << frame.size << "\t" << i << "\t\t";  
+            print_bits<uint32_t>(temp);
         }        
     }
     // std::cout << br[int(this->frames.front().bitrate)]  << " " << sr[int(this->frames.front().sampling_rate)]<< std::endl;
     // std::cout << "Length of mp3-file in seconds: " << double((count -c) * 0.026) << std::endl;
-    for (auto i : this->frames) 
-        std::cout << i.data;
+    // for (auto i : this->frames) 
+    //     std::cout << i.data;
     return true;
 }
